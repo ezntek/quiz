@@ -1,0 +1,15 @@
+basic:
+  enable: true
+  imperfect_digits: true
+  max: 30
+times_table:
+  enable: true
+  up_to: 12
+advanced:
+  enable: true
+  max_power: 3
+  roots: true
+
+enable:
+  - basic
+  - times_table
