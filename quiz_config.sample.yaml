@@ -9,7 +9,3 @@ advanced:
   enable: true
   max_power: 3
   roots: true
-
-enable:
-  - basic
-  - times_table
