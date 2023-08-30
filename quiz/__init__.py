@@ -1,3 +1,4 @@
+import random
 import colorama
 import typing
 
@@ -15,7 +16,7 @@ advanced:
   roots: true
 """
 
-Operation = typing.Literal["add", "sub", "mul", "div", "pow", "sqrt"]
+Operation = typing.Literal["add", "sub", "mul", "div", "pow", "root"]
 Mode = typing.Literal['basic', 'times_table', 'advanced']
 
 class InvalidConfigError(Exception):
@@ -34,15 +35,38 @@ class _TimesTableModeConfig(typing.TypedDict):
 
 class _AdvancedModeConfig(typing.TypedDict):
     enable: bool
+    max_base: int
     max_power: int
     roots: bool
 
-class Config(typing.TypedDict):
+class _Config_Dict(typing.TypedDict):
     basic: _BasicModeConfig
     times_table: _TimesTableModeConfig
     advanced: _AdvancedModeConfig
 
-def gen_op(config: Config):
-    enable = {en["enable"] for en in config.values()}#type: ignore
+class Config:
+    _instance: 'Config' = None # type: ignore
+    cf: _Config_Dict = None # type: ignore
+    def __new__(cls, cf_dict: typing.Optional[_Config_Dict] = None) -> typing.Self:
+        if not cls._instance:
+            cls._instance = cls(cf_dict)
+            cls._instance.cf = cf_dict # type: ignore
+        return cls._instance
 
 
+def gen_op() -> Operation:
+    config = Config()
+
+    BASIC_OPS = ["add", "sub",]
+    TT_OPS = ["mul", "div"]
+    ADVANCED_OPS = ["pow", "root"]
+
+    avail_ops = []
+    if config.cf["basic"]["enable"]:
+        avail_ops += BASIC_OPS
+    if config.cf["times_table"]["enable"]:
+        avail_ops += TT_OPS
+    if config.cf["advanced"]["enable"]:
+        avail_ops += ADVANCED_OPS
+
+    return random.choice(avail_ops)

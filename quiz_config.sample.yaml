@@ -7,5 +7,6 @@ times_table:
   up_to: 12
 advanced:
   enable: true
+  max_base: 10
   max_power: 3
   roots: true

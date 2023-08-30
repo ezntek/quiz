@@ -1,10 +1,10 @@
 import yaml
-import colorama
 import typing
 
 from . import *
+from . import _Config_Dict
 
-def load_config() -> Config:
+def load_config() -> _Config_Dict:
     def _load() -> dict[str, typing.Any]:
         return yaml.safe_load(CONFIG_PATH)
     
@@ -32,7 +32,7 @@ def load_config() -> Config:
 
     if any((itm_name := item)
             not in cfg["advanced"]
-                for item in ["enable", "max_power", "roots"]):
+                for item in ["enable", "max_base", "max_power", "roots"]):
         raise InvalidConfigError(f"advanced.{itm_name}")
 
     return cfg # type: ignore
