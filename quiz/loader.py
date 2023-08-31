@@ -2,19 +2,18 @@ import yaml
 import typing
 
 from . import *
-from . import _Config_Dict
 
-def load_config() -> _Config_Dict:
+def load_config() -> Config:
     def _load() -> dict[str, typing.Any]:
-        return yaml.safe_load(CONFIG_PATH)
-    
+        return yaml.load(open(CONFIG_PATH), Loader=yaml.FullLoader)
+        
     try:
         cfg = _load()
-    except FileNotFoundError:
+    except:
         with open(CONFIG_PATH, "w") as f:
             f.write(SAMPLE_CONFIG)
         cfg = _load()
-    
+
     if any((itm_name := item)
             not in cfg
                 for item in ["basic", "times_table", "advanced"]):

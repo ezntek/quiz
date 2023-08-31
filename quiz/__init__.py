@@ -12,6 +12,7 @@ times_table:
   up_to: 12
 advanced:
   enable: true
+  max_base: 10
   max_power: 3
   roots: true
 """
@@ -39,34 +40,22 @@ class _AdvancedModeConfig(typing.TypedDict):
     max_power: int
     roots: bool
 
-class _Config_Dict(typing.TypedDict):
+class Config(typing.TypedDict):
     basic: _BasicModeConfig
     times_table: _TimesTableModeConfig
     advanced: _AdvancedModeConfig
 
-class Config:
-    _instance: 'Config' = None # type: ignore
-    cf: _Config_Dict = None # type: ignore
-    def __new__(cls, cf_dict: typing.Optional[_Config_Dict] = None) -> typing.Self:
-        if not cls._instance:
-            cls._instance = cls(cf_dict)
-            cls._instance.cf = cf_dict # type: ignore
-        return cls._instance
-
-
-def gen_op() -> Operation:
-    config = Config()
-
+def gen_op(config: Config) -> Operation:
     BASIC_OPS = ["add", "sub",]
     TT_OPS = ["mul", "div"]
     ADVANCED_OPS = ["pow", "root"]
 
     avail_ops = []
-    if config.cf["basic"]["enable"]:
+    if config["basic"]["enable"]:
         avail_ops += BASIC_OPS
-    if config.cf["times_table"]["enable"]:
+    if config["times_table"]["enable"]:
         avail_ops += TT_OPS
-    if config.cf["advanced"]["enable"]:
+    if config["advanced"]["enable"]:
         avail_ops += ADVANCED_OPS
 
     return random.choice(avail_ops)
