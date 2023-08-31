@@ -16,7 +16,7 @@ def load_config() -> Config:
 
     if any((itm_name := item)
             not in cfg
-                for item in ["basic", "times_table", "advanced"]):
+                for item in ["basic", "times_table", "advanced", "count"]):
         raise InvalidConfigError(itm_name)
 
     if any((itm_name := item)

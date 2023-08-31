@@ -9,27 +9,36 @@ def _gen_vals(op: Operation, config: Config) -> tuple[int, int]:
         case "add" | "sub":
             max_val = config["basic"]["max"]
             if not config["basic"]["imperfect_digits"]:
-                displacement = random.randint(0, 9)
+                displacement = random.randint(1, 9)
                 val = math.ceil(random.randint(0, max_val)) / (10 ** (len(str(max))-1))
                 return (val - displacement, displacement)
             else:
-                val = random.randint(0, max_val)
-                return (val, val)
+                lim = math.floor(max_val/2)
+                val1 = random.randint(0, lim)
+                val2 = random.randint(0, lim)
+                return (val1, val2)
     
-        case "mul" | "div":
+        case "mul":
             up_to = config["times_table"]["up_to"]
-            val1 = random.randint(0, up_to)
-            val2 = random.randint(0, up_to)
+            val1 = random.randint(2, up_to)
+            val2 = random.randint(2, up_to)
 
             return (val1, val2)
+        case "div":
+            up_to = config["times_table"]["up_to"]
+            TIMES_TABLE = {i+1: [(i+1)*(j+1) for j in range(up_to)] for i in range(up_to)}
+            
+            divisor = random.randint(2, up_to)
+            dividend = random.choice(TIMES_TABLE[divisor])
+            return (dividend, divisor)
         case "pow":
-            base = random.randint(0, config["advanced"]["max_base"])
+            base = random.randint(1, config["advanced"]["max_base"])
             pow = random.randint(2, config["advanced"]["max_power"])
 
             return (base, pow)
         case "root":
             PERFECT_SQUARES = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
-            PERFECT_CUBES = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+            PERFECT_CUBES = [1, 8, 27, 64, 125, 216, 343, 512, 729, 1000]
             if random.randint(0, 10) % 2:
                 return (random.choice(PERFECT_SQUARES), 2)
             else:

@@ -23,29 +23,44 @@ class App:
         self.stdin = sys.stdin
         self.t_width, self.t_height = shutil.get_terminal_size()
 
-    def _ask_qn(self, qn: Question):
-        def _ask(a):
+    def _ask_qn(self, qn: Question, correct: bool, iteration: int) -> bool:
+        def _ask(correct: bool, iteration: int):
+            # clear
             _clear(self.stdout)
-            _cursor_to(self.stdout, 0, 0)
-            text = f"What is {colorama.Style.BRIGHT}{colorama.Back.BLUE}{qn.__repr__()}{colorama.Style.RESET_ALL}? {a}"
+
+            # centering stuff
+            text = f"What is {colorama.Style.BRIGHT}{colorama.Fore.BLUE}{qn.__repr__()}{colorama.Style.RESET_ALL}?"
+            text_len = len(text)
+            cur_x, cur_y = int((self.t_width / 2) - (text_len/4)), int(self.t_height / 2)
+
+            _cursor_to(self.stdout, cur_x, cur_y-2)
+            self.stdout.write(f"{colorama.Style.BRIGHT}{colorama.Fore.BLUE}{iteration}/{self._config['count']}{colorama.Style.RESET_ALL}")
+            self.stdout.flush()
+
+            _cursor_to(self.stdout, cur_x, cur_y-1)
             self.stdout.write(text)
             self.stdout.flush()
-            _cursor_to(self.stdout, 0, self.t_height)
-            self.stdout.write("> ")
+            
+            _cursor_to(self.stdout, cur_x, cur_y+1)
+
+            proompt = f"{colorama.Fore.GREEN}✓ {colorama.Fore.RESET}" if correct else f"{colorama.Fore.RED}× {colorama.Fore.RESET}" # spelt proompt on purpose
+            self.stdout.write(proompt)
             self.stdout.flush()
         
-        correct = False
-        while not correct:
+        # avoid weird python function argument mutation behavior
+        correct_internal = correct
+        while True:
             ans = qn.solve()
-            _ask(ans)
+            _ask(correct_internal, iteration)
             user_ans_s = self.stdin.readline()
             try:
                 if int(user_ans_s.strip()) == ans:
-                    break
+                    return True
             except ValueError:            
-                continue
+                correct_internal = False # BUG: bad code alert
 
     def run(self):
-        qns = [Question(self._config) for _ in range(10)]
-        for qn in qns:
-            self._ask_qn(qn)
+        qns = [Question(self._config) for _ in range(self._config["count"])]
+        correct = False
+        for it, qn in enumerate(qns):
+            correct = self._ask_qn(qn, correct, it+1)

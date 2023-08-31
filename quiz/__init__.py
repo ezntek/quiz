@@ -15,6 +15,7 @@ advanced:
   max_base: 10
   max_power: 3
   roots: true
+count: 20
 """
 
 Operation = typing.Literal["add", "sub", "mul", "div", "pow", "root"]
@@ -44,6 +45,7 @@ class Config(typing.TypedDict):
     basic: _BasicModeConfig
     times_table: _TimesTableModeConfig
     advanced: _AdvancedModeConfig
+    count: int
 
 def gen_op(config: Config) -> Operation:
     BASIC_OPS = ["add", "sub",]

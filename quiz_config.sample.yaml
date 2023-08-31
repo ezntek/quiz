@@ -10,3 +10,4 @@ advanced:
   max_base: 10
   max_power: 3
   roots: true
+count: 20
