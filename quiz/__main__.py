@@ -1,8 +1,12 @@
 import sys
-from quiz.app import App
+from app.app import run, enter_alt_screen, exit_alt_screen
 
 if __name__ == "__main__":
     try:
-        sys.exit(App().run())
+        enter_alt_screen()
+        run()
     except KeyboardInterrupt:
+        pass
+    finally:
+        exit_alt_screen()
         sys.exit()
