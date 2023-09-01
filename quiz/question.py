@@ -73,7 +73,7 @@ class Question:
             case "pow":
                 return self.values[0] ** self.values[1]
             case "root":
-                return math.floor(self.values[0] ** (1/self.values[1]))
+                return round(self.values[0] ** (1/self.values[1]))
     
     def __repr__(self) -> str:
         if self.op == "root":

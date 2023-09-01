@@ -42,7 +42,6 @@ class App:
             self.stdout.flush()
             
             _cursor_to(self.stdout, cur_x, cur_y+1)
-
             proompt = f"{colorama.Fore.GREEN}✓ {colorama.Fore.RESET}" if correct else f"{colorama.Fore.RED}× {colorama.Fore.RESET}" # spelt proompt on purpose
             self.stdout.write(proompt)
             self.stdout.flush()
@@ -56,8 +55,10 @@ class App:
             try:
                 if int(user_ans_s.strip()) == ans:
                     return True
+                else:
+                    correct_internal = False
             except ValueError:            
-                correct_internal = False # BUG: bad code alert
+                correct_internal = False
 
     def run(self):
         qns = [Question(self._config) for _ in range(self._config["count"])]
