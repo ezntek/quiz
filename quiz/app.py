@@ -37,13 +37,13 @@ def ask_question(config: Config, qn: Question, iteration: int):
         nonlocal t_height
 
         # centering stuff
-        text = f"What is {colorama.Style.BRIGHT}{colorama.Fore.BLUE}{qn.__repr__()}{colorama.Style.RESET_ALL}?"
+        text = f"What is {colorama.Style.BRIGHT}{colorama.Fore.CYAN}{qn.__repr__()}{colorama.Style.RESET_ALL}?"
         text_len = len(text)
         cur_x, cur_y = int((t_width / 2) - (text_len/4)), int(t_height / 2)
 
         # print the current question
         cursor_to(cur_x, cur_y-2)
-        stdout.write(f"{colorama.Style.BRIGHT}{colorama.Fore.BLUE}{iteration}/{config['count']}{colorama.Style.RESET_ALL}")
+        stdout.write(f"{colorama.Style.BRIGHT}{colorama.Fore.CYAN}{iteration}/{config['count']}{colorama.Style.RESET_ALL}")
         stdout.flush()
 
         # print the question text

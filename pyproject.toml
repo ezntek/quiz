@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "quiz"
-version = "0.2.0"
+version = "0.2.1"
 description = "a quiz app that i was forced to make"
 authors = ["ezntek <eason@ezntek.com>"]
 readme = "README.md"
